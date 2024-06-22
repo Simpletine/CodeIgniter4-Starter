@@ -2,9 +2,9 @@
 # Contribute
 To contribute to this repository and extend its architectural capabilities or you find an issue, even if it's not very important/critical, please feel free to create an issue, follow these steps:
 
-1. [Open an issue](https://github.com/Simpletine/CodeIgniter4-HMVC/issues/new/choose) with detailed information.
+1. Open an issue with detailed information.
 2. Create and push a new branch with your changes.
-3. [Create a pull request](https://github.com/Simpletine/CodeIgniter4-HMVC/compare), referencing the issue you addressed.
+3. Create a pull request, referencing the issue you addressed.
 
 
 ### Git Command Line
@@ -30,6 +30,6 @@ Set the upstream branch to push your work from local
 git push --set-upstream origin issue-10
 ```
 #### Now you have completely push your work to the repository.
-[Create a pull request](https://github.com/Simpletine/CodeIgniter4-HMVC/compare) referencing the changes, fixes, and additions. The more detailed, the better. You can use dots, numbers, and code snippets to describe your changes. 
+Create a pull request referencing the changes, fixes, and additions. The more detailed, the better. You can use dots, numbers, and code snippets to describe your changes. 
 
 If you have useful commands from Spark, Composer, or shell scripts, please include them. We will consolidate the information and add it to the markdown file for others to use easily.
