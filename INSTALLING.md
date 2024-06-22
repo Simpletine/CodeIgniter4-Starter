@@ -32,4 +32,4 @@ php spark serve
 
 ---
 #### Installation Issue
-If you're facing any installation issue, [open a discussion](https://github.com/Simpletine/CodeIgniter4-HMVC/discussions) in community
+If you're facing any installation issue, [open a discussion](https://github.com/Simpletine/CodeIgniter4-Starter/discussions) in community
