@@ -12,7 +12,9 @@
         "fakerphp/faker": "^1.23.1",
         "mikey179/vfsstream": "^1.6",
         "phpstan/phpstan": "2.0.x-dev",
-        "phpunit/phpunit": "^9.1"
+        "phpunit/phpunit": "^9.1",
+        "codeigniter/coding-standard": "^1.7",
+        "squizlabs/php_codesniffer": "4.0.x-dev"
     },
     "autoload": {
         "exclude-from-classmap": [
@@ -25,7 +27,8 @@
         "sort-packages": true
     },
     "scripts": {
-        "test": "phpunit"
+        "test": "phpunit",
+        "fix": "vendor/bin/php-cs-fixer fix --verbose"
     },
     "minimum-stability": "dev"
 }
