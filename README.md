@@ -4,29 +4,22 @@
 [![YouTube Channel](https://img.shields.io/badge/YouTube_Channel-Subscribe-FF0000)](https://www.youtube.com/channel/UCRuDf31rPyyC2PUbsMG0vZw) 
 
 ## Overview
-This repository provides a starter template for **CodeIgniter 4**, configured to get your application up and running quickly. Follow the instructions below to set up and start developing with CodeIgniter 4.
+This repository provides a starter template for **CodeIgniter 4**, configured to get your application up and running quickly. It is based on [Simpletine/CodeIgniter4-HMVC-Shield](https://github.com/Simpletine/CodeIgniter4-HMVC-Shield), with pre-designed standardized configurations for modules. This starter aims to enhance project initialization efficiency and will gradually expand with more functional features.
 
 ## Prerequisites
 Ensure you have the following installed before starting:
 
-- **PHP 7.4** or above
-- **Composer**
-- **CodeIgniter 4.4.8**
+- **PHP ≥ 8.2**
+- **Composer ≥ 2.0**
+- **CodeIgniter ≥ v4.4.0**
 
 ## Installation Guide
 
 ### 1. Clone the Project
-Choose one of the following methods to clone the project into your desired folder:
+Use Composer to create the project in your desired folder:
 
-**Using Composer:**
 ```bash
 composer create-project simpletine/codeigniter4-starter starter --stability=dev
-```
-
-**Or using Git:**
-
-```bash
-git clone https://github.com/Simpletine/CodeIgniter4-Starter.git starter
 ```
 
 **Navigate to the project folder:**
@@ -58,6 +51,14 @@ php spark serve --port=9000
 ```
 
 The application should now be accessible at http://localhost:9000.
+
+## Differences from `composer create-project codeigniter4/appstarter`
+
+This starter is distinct from the default `composer create-project codeigniter4/appstarter` in the following ways:
+
+1. **HMVC Support**: Based on [Simpletine/CodeIgniter4-HMVC-Shield](https://github.com/Simpletine/CodeIgniter4-HMVC-Shield), it includes pre-designed standardized configurations for modules.
+2. **Enhanced Setup Efficiency**: Pre-configured settings and structures to streamline project initialization.
+3. **Future Expansion**: Plans to gradually integrate more functional features to further enhance development efficiency.
 
 ## Code Standards and Fixing
 This project follows PHP coding standards. To automatically fix coding standard issues, run the following command:

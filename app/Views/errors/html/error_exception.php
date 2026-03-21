@@ -1,7 +1,6 @@
 <?php
-
 use CodeIgniter\CodeIgniter;
-use Config\Services;
+use CodeIgniter\HTTP\Header;
 
 $errorId = uniqid('error', true);
 ?>
@@ -25,7 +24,7 @@ $errorId = uniqid('error', true);
     <!-- Header -->
     <div class="header">
         <div class="environment">
-            Displayed at <?= esc(date('H:i:sa')) ?> &mdash;
+            Displayed at <?= esc(date('H:i:s')) ?> &mdash;
             PHP: <?= esc(PHP_VERSION) ?>  &mdash;
             CodeIgniter: <?= esc(CodeIgniter::CI_VERSION) ?> --
             Environment: <?= ENVIRONMENT ?>
@@ -61,15 +60,15 @@ while ($prevException = $last->getPrevious()) {
 
     <pre>
     Caused by:
-            <?= esc(get_class($prevException)), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
+    <?= esc($prevException::class), esc($prevException->getCode() ? ' #' . $prevException->getCode() : '') ?>
 
-            <?= nl2br(esc($prevException->getMessage())) ?>
-    <a href="https://www.duckduckgo.com/?q=<?= urlencode(get_class($prevException) . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
+    <?= nl2br(esc($prevException->getMessage())) ?>
+    <a href="https://www.duckduckgo.com/?q=<?= urlencode($prevException::class . ' ' . preg_replace('#\'.*\'|".*"#Us', '', $prevException->getMessage())) ?>"
        rel="noreferrer" target="_blank">search &rarr;</a>
-            <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
+    <?= esc(clean_path($prevException->getFile()) . ':' . $prevException->getLine()) ?>
     </pre>
 
-            <?php
+        <?php
 }
 ?>
     </div>
@@ -93,6 +92,7 @@ while ($prevException = $last->getPrevious()) {
 
                 <ol class="trace">
                 <?php foreach ($trace as $index => $row) : ?>
+
                     <li>
                         <p>
                             <!-- Trace info -->
@@ -104,7 +104,7 @@ while ($prevException = $last->getPrevious()) {
                             echo esc(clean_path($row['file']) . ' : ' . $row['line']);
                         }
                     ?>
-                            <?php else : ?>
+                            <?php else: ?>
                                 {PHP internal code}
                             <?php endif; ?>
 
@@ -120,7 +120,7 @@ while ($prevException = $last->getPrevious()) {
                                         <?php
                             $params = null;
                                     // Reflection by name is not available for closure function
-                                    if (substr($row['function'], -1) !== '}') {
+                                    if (! str_ends_with($row['function'], '}')) {
                                         $mirror = isset($row['class']) ? new ReflectionMethod($row['class'], $row['function']) : new ReflectionFunction($row['function']);
                                         $params = $mirror->getParameters();
                                     }
@@ -181,7 +181,7 @@ while ($prevException = $last->getPrevious()) {
                                 <td>
                                     <?php if (is_string($value)) : ?>
                                         <?= esc($value) ?>
-                                    <?php else : ?>
+                                    <?php else: ?>
                                         <pre><?= esc(print_r($value, true)) ?></pre>
                                     <?php endif; ?>
                                 </td>
@@ -211,7 +211,7 @@ while ($prevException = $last->getPrevious()) {
                                 <td>
                                     <?php if (is_string($value)) : ?>
                                         <?= esc($value) ?>
-                                    <?php else : ?>
+                                    <?php else: ?>
                                         <pre><?= esc(print_r($value, true)) ?></pre>
                                     <?php endif; ?>
                                 </td>
@@ -224,7 +224,7 @@ while ($prevException = $last->getPrevious()) {
 
             <!-- Request -->
             <div class="content" id="request">
-                <?php $request = Services::request(); ?>
+                <?php $request = service('request'); ?>
 
                 <table>
                     <tbody>
@@ -234,7 +234,7 @@ while ($prevException = $last->getPrevious()) {
                         </tr>
                         <tr>
                             <td>HTTP Method</td>
-                            <td><?= esc(strtoupper($request->getMethod())) ?></td>
+                            <td><?= esc($request->getMethod()) ?></td>
                         </tr>
                         <tr>
                             <td>IP Address</td>
@@ -286,7 +286,7 @@ while ($prevException = $last->getPrevious()) {
                                 <td>
                                     <?php if (is_string($value)) : ?>
                                         <?= esc($value) ?>
-                                    <?php else : ?>
+                                    <?php else: ?>
                                         <pre><?= esc(print_r($value, true)) ?></pre>
                                     <?php endif; ?>
                                 </td>
@@ -298,6 +298,7 @@ while ($prevException = $last->getPrevious()) {
                 <?php endforeach ?>
 
                 <?php if ($empty) : ?>
+
                     <div class="alert">
                         No $_GET, $_POST, or $_COOKIE Information to show.
                     </div>
@@ -306,6 +307,7 @@ while ($prevException = $last->getPrevious()) {
 
                 <?php $headers = $request->headers(); ?>
                 <?php if (! empty($headers)) : ?>
+
                     <h3>Headers</h3>
 
                     <table>
@@ -316,10 +318,20 @@ while ($prevException = $last->getPrevious()) {
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach ($headers as $header) : ?>
+                        <?php foreach ($headers as $name => $value) : ?>
                             <tr>
-                                <td><?= esc($header->getName(), 'html') ?></td>
-                                <td><?= esc($header->getValueLine(), 'html') ?></td>
+                                <td><?= esc($name, 'html') ?></td>
+                                <td>
+                                <?php
+                                if ($value instanceof Header) {
+                                    echo esc($value->getValueLine(), 'html');
+                                } else {
+                                    foreach ($value as $i => $header) {
+                                        echo ' (' . $i + 1 . ') ' . esc($header->getValueLine(), 'html');
+                                    }
+                                }
+                            ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>
@@ -330,7 +342,7 @@ while ($prevException = $last->getPrevious()) {
 
             <!-- Response -->
             <?php
-                $response = Services::response();
+                $response = service('response');
 $response->setStatusCode(http_response_code());
 ?>
             <div class="content" id="response">
@@ -343,8 +355,6 @@ $response->setStatusCode(http_response_code());
 
                 <?php $headers = $response->headers(); ?>
                 <?php if (! empty($headers)) : ?>
-                    <?php natsort($headers) ?>
-
                     <h3>Headers</h3>
 
                     <table>
@@ -355,10 +365,20 @@ $response->setStatusCode(http_response_code());
                             </tr>
                         </thead>
                         <tbody>
-                        <?php foreach (array_keys($headers) as $name) : ?>
+                        <?php foreach ($headers as $name => $value) : ?>
                             <tr>
                                 <td><?= esc($name, 'html') ?></td>
-                                <td><?= esc($response->getHeaderLine($name), 'html') ?></td>
+                                <td>
+                                <?php
+                    if ($value instanceof Header) {
+                        echo esc($response->getHeaderLine($name), 'html');
+                    } else {
+                        foreach ($value as $i => $header) {
+                            echo ' (' . $i + 1 . ') ' . esc($header->getValueLine(), 'html');
+                        }
+                    }
+                            ?>
+                                </td>
                             </tr>
                         <?php endforeach; ?>
                         </tbody>

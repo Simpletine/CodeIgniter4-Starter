@@ -13,9 +13,7 @@ declare(strict_types=1);
 
 namespace Config;
 
-use CodeIgniter\Config\BaseConfig;
 use Kint\Parser\ConstructablePluginInterface;
-use Kint\Renderer\AbstractRenderer;
 use Kint\Renderer\Rich\TabPluginInterface;
 use Kint\Renderer\Rich\ValuePluginInterface;
 
@@ -29,7 +27,7 @@ use Kint\Renderer\Rich\ValuePluginInterface;
  *
  * @see https://kint-php.github.io/kint/ for details on these settings.
  */
-class Kint extends BaseConfig
+class Kint
 {
     /*
     |--------------------------------------------------------------------------
@@ -53,7 +51,6 @@ class Kint extends BaseConfig
     */
     public string $richTheme = 'aante-light.css';
     public bool $richFolder  = false;
-    public int $richSort     = AbstractRenderer::SORT_FULL;
 
     /**
      * @var array<string, class-string<ValuePluginInterface>>|null
